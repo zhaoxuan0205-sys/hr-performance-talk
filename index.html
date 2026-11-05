@@ -1,17 +1,17 @@
 <!doctype html>
 <!--
-  谈绩效 · 面谈准备（单文件版）
+  谈绩效 · 面谈准备（轻量版 · 单文件）
   双击用浏览器打开即可使用，无需安装、无需登录、无需联网。
-  数据保存在本机浏览器中，请定期在「设置」里导出备份。
-  生成时间：2026-11-04T15:17:36.751Z
+  流程：说情况 → 确认重点 → 拿方案；多人时逐个保存记录，最后一次性下载 Markdown。
+  数据保存在本机浏览器中，请及时下载留档。
+  生成时间：2026-11-05T14:33:14.953Z
 -->
 
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="谈绩效——面向直接管理者的绩效反馈面谈准备工具。逐人准备，谈完一起导出沟通方案。不需要登录。" />
-    <meta name="theme-color" content="#163a5f" />
+    <meta name="description" content="谈绩效——面向直接管理者的绩效反馈面谈准备小工具" />
     <title>谈绩效｜面谈准备</title>
     <style>
 :root {
@@ -331,307 +331,22 @@ input:focus, textarea:focus { border-color: var(--navy); box-shadow: 0 0 0 3px r
   @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 }
 
-/* ============================================================
-   P0 应用层新增组件（登录、工作台、清单、设置）
-   沿用原有配色变量与卡片语言
-   ============================================================ */
+/* ---- 轻量版补充样式 ---- */
+.status.blocked { color: var(--risk); background: var(--risk-bg); }
+.judgment-item { margin: 8px 0; }
+.judgment-item p { margin: 0 0 4px; }
+.judgment-reason { color: var(--muted); font-size: 13px; line-height: 1.6; }
 
-.boot { display: grid; place-items: center; min-height: 60vh; color: var(--muted); }
-
-/* 登录页 */
-.auth-wrap {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 420px);
-  gap: clamp(24px, 5vw, 72px);
-  align-items: center;
-  padding: clamp(24px, 6vw, 80px);
-  max-width: 1240px;
-  margin-inline: auto;
-}
-.auth-side h1 { font-size: clamp(30px, 4vw, 46px); line-height: 1.2; margin: 22px 0 16px; letter-spacing: -0.02em; }
-.auth-side .lead { max-width: 34em; }
-.brand-plain { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; }
-.brand-plain small { display: block; font-weight: 500; font-size: 12px; color: var(--muted); margin-top: 2px; }
-.auth-points { margin: 26px 0 0; padding-left: 18px; color: var(--muted); font-size: 14px; line-height: 1.9; }
-.auth-points li::marker { color: var(--navy); }
-.auth-card { padding: clamp(22px, 3vw, 34px); }
-.auth-tabs { display: flex; gap: 6px; background: #eef2f6; padding: 4px; border-radius: 10px; margin-bottom: 22px; }
-.auth-tab { flex: 1; border: 0; background: transparent; padding: 9px 0; border-radius: 8px; font: inherit; font-size: 14px; color: var(--muted); cursor: pointer; }
-.auth-tab.active { background: #fff; color: var(--ink); font-weight: 600; box-shadow: 0 1px 3px rgba(23,37,58,.1); }
-.auth-card .field { margin-bottom: 16px; }
-.auth-card .large-button { width: 100%; margin-top: 6px; }
-
-/* 顶部导航 */
-.nav-links { display: flex; gap: 4px; margin-left: 18px; }
-.nav-link { border: 0; background: transparent; font: inherit; font-size: 14px; color: var(--muted); padding: 8px 12px; border-radius: 8px; cursor: pointer; }
-.nav-link:hover { background: rgba(22,58,95,.06); color: var(--ink); }
-.nav-link.active { color: var(--navy); font-weight: 600; background: rgba(22,58,95,.07); }
-.user-chip { margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
-.user-chip .link-button { font-size: 13px; }
-
-/* 页头 */
-.dash-head { display: flex; gap: 20px; align-items: flex-start; justify-content: space-between; margin: 26px 0 18px; flex-wrap: wrap; }
-.dash-head h1 { font-size: clamp(22px, 2.6vw, 30px); margin: 6px 0 8px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.dash-head .sub { color: var(--muted); font-size: 14px; margin: 0; }
-.head-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.crumbs { margin-top: 18px; font-size: 13px; }
-
-/* 统计 */
-.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
-.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; }
-.stat span { font-size: 12.5px; color: var(--muted); }
-.stat strong { font-size: 26px; letter-spacing: -0.02em; color: var(--navy); }
-
-/* 列表 */
-.list { display: flex; flex-direction: column; }
-.list-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  width: 100%; text-align: left; font: inherit; color: inherit;
-  padding: 15px 4px; border: 0; border-top: 1px solid var(--line);
-  background: transparent; cursor: pointer;
-}
-.list-row:first-child { border-top: 0; }
-.list-row:not(.static):hover { background: rgba(22,58,95,.035); }
-.list-main { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-.list-main strong { font-size: 15px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.list-main span { font-size: 12.5px; color: var(--muted); }
-.list-meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.arrow { color: var(--muted); font-size: 15px; }
-.role-tag { font-size: 11.5px; font-weight: 500; color: var(--muted); background: #eef2f6; padding: 2px 8px; border-radius: 999px; }
-
-.chip { font-size: 11.5px; padding: 3px 9px; border-radius: 999px; white-space: nowrap; border: 1px solid transparent; }
-.chip-ready { color: var(--fact); background: var(--fact-bg); border-color: rgba(35,120,95,.18); }
-.chip-draft { color: var(--muted); background: #f0f3f6; border-color: var(--line); }
-.chip-risk { color: var(--risk); background: var(--risk-bg); border-color: rgba(165,61,70,.2); }
-
-/* 空状态 */
-.empty { text-align: center; padding: 42px 20px; color: var(--muted); }
-.empty strong { display: block; color: var(--ink); font-size: 15px; margin-bottom: 8px; }
-.empty p { margin: 0 auto; max-width: 30em; font-size: 13.5px; line-height: 1.8; }
-
-/* 内联表单 */
-.inline-form { margin-bottom: 16px; }
-.inline-form .actions { margin-top: 12px; }
-.rename-form { display: flex; gap: 8px; align-items: center; margin: 8px 0; flex-wrap: wrap; }
-.rename-form input { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; min-width: 260px; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-/* 链接按钮与危险操作 */
-.link-button { border: 0; background: transparent; font: inherit; color: var(--navy); cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
-.link-button.danger { color: var(--risk); }
-.link-button.small-button { font-size: 12.5px; margin-left: 6px; }
-a.secondary, a.primary { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
-.danger-button { border: 1px solid var(--risk); background: var(--risk); color: #fff; font: inherit; font-weight: 600; padding: 10px 18px; border-radius: 10px; cursor: pointer; }
-.danger-button:hover { filter: brightness(1.06); }
-.danger-zone { margin: 26px 0 60px; padding: 18px 20px; border: 1px dashed rgba(165,61,70,.35); border-radius: 12px; background: rgba(253,239,240,.5); }
-.danger-zone strong { font-size: 14px; color: var(--risk); }
-.danger-zone p { margin: 6px 0 10px; font-size: 13px; color: var(--muted); }
-.danger-zone .actions { margin-top: 10px; }
-
-/* 分析结果 */
-.engine-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); margin: 24px 0 6px; }
-.engine-bar .link-button { margin-left: auto; font-size: 12.5px; }
-.warn-box { background: #fffdf5; border: 1px solid rgba(166,97,12,.25); border-radius: 10px; padding: 12px 16px 12px 16px; margin: 12px 0; }
-.warn-box ul { margin: 0; padding-left: 18px; font-size: 13px; color: #7a4d09; line-height: 1.8; }
-.risk-banner { background: var(--risk-bg); border: 1px solid rgba(165,61,70,.28); border-radius: 12px; padding: 16px 18px; margin: 14px 0; }
-.risk-banner strong { color: var(--risk); font-size: 14px; }
-.risk-banner p { margin: 6px 0 0; font-size: 13px; color: #7d2b32; line-height: 1.75; }
-.risk-banner ul { margin: 8px 0 0; padding-left: 18px; font-size: 13px; color: #7d2b32; line-height: 1.8; }
-.risk-banner.high { border-width: 2px; }
-.opening { font-size: 15px; line-height: 1.85; color: var(--ink); margin: 8px 0 0; }
-.alt { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
-.version-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 18px 0 8px; font-size: 12.5px; color: var(--muted); }
-.version-bar .choice { padding: 5px 10px; font-size: 12.5px; }
-
-/* 键值表与清单 */
-.kv { display: grid; gap: 10px; margin: 12px 0 0; }
-.kv div { display: flex; gap: 16px; font-size: 13.5px; }
-.kv dt { width: 96px; color: var(--muted); flex-shrink: 0; }
-.kv dd { margin: 0; color: var(--ink); word-break: break-all; }
-.plain-list { margin: 10px 0 0; padding-left: 18px; font-size: 13.5px; line-height: 1.9; color: var(--muted); }
-select { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); min-width: 140px; }
-
-@media (max-width: 900px) {
-  .auth-wrap { grid-template-columns: 1fr; padding: 28px 20px 48px; }
-  .auth-side h1 { margin-top: 16px; }
-  .stat-row { grid-template-columns: 1fr; }
-  .form-grid { grid-template-columns: 1fr; }
-  .dash-head { flex-direction: column; }
-  .head-actions { width: 100%; }
-  .head-actions > * { flex: 1; }
-  .list-row { flex-direction: column; align-items: flex-start; gap: 10px; }
-  .list-meta { width: 100%; flex-wrap: wrap; }
-  .nav-links { margin-left: 0; }
-  .topbar { flex-wrap: wrap; gap: 10px; }
-  .user-chip { margin-left: 0; }
-}
-
-/* ============================================================
-   P0 应用层新增组件（登录、工作台、清单、设置）
-   沿用原有配色变量与卡片语言
-   ============================================================ */
-
-.boot { display: grid; place-items: center; min-height: 60vh; color: var(--muted); }
-
-/* 登录页 */
-.auth-wrap {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 420px);
-  gap: clamp(24px, 5vw, 72px);
-  align-items: center;
-  padding: clamp(24px, 6vw, 80px);
-  max-width: 1240px;
-  margin-inline: auto;
-}
-.auth-side h1 { font-size: clamp(30px, 4vw, 46px); line-height: 1.2; margin: 22px 0 16px; letter-spacing: -0.02em; }
-.auth-side .lead { max-width: 34em; }
-.brand-plain { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; }
-.brand-plain small { display: block; font-weight: 500; font-size: 12px; color: var(--muted); margin-top: 2px; }
-.auth-points { margin: 26px 0 0; padding-left: 18px; color: var(--muted); font-size: 14px; line-height: 1.9; }
-.auth-points li::marker { color: var(--navy); }
-.auth-card { padding: clamp(22px, 3vw, 34px); }
-.auth-tabs { display: flex; gap: 6px; background: #eef2f6; padding: 4px; border-radius: 10px; margin-bottom: 22px; }
-.auth-tab { flex: 1; border: 0; background: transparent; padding: 9px 0; border-radius: 8px; font: inherit; font-size: 14px; color: var(--muted); cursor: pointer; }
-.auth-tab.active { background: #fff; color: var(--ink); font-weight: 600; box-shadow: 0 1px 3px rgba(23,37,58,.1); }
-.auth-card .field { margin-bottom: 16px; }
-.auth-card .large-button { width: 100%; margin-top: 6px; }
-
-/* 顶部导航 */
-.nav-links { display: flex; gap: 4px; margin-left: 18px; }
-.nav-link { border: 0; background: transparent; font: inherit; font-size: 14px; color: var(--muted); padding: 8px 12px; border-radius: 8px; cursor: pointer; }
-.nav-link:hover { background: rgba(22,58,95,.06); color: var(--ink); }
-.nav-link.active { color: var(--navy); font-weight: 600; background: rgba(22,58,95,.07); }
-.user-chip { margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
-.user-chip .link-button { font-size: 13px; }
-
-/* 页头 */
-.dash-head { display: flex; gap: 20px; align-items: flex-start; justify-content: space-between; margin: 26px 0 18px; flex-wrap: wrap; }
-.dash-head h1 { font-size: clamp(22px, 2.6vw, 30px); margin: 6px 0 8px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.dash-head .sub { color: var(--muted); font-size: 14px; margin: 0; }
-.head-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.crumbs { margin-top: 18px; font-size: 13px; }
-
-/* 统计 */
-.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
-.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; }
-.stat span { font-size: 12.5px; color: var(--muted); }
-.stat strong { font-size: 26px; letter-spacing: -0.02em; color: var(--navy); }
-
-/* 列表 */
-.list { display: flex; flex-direction: column; }
-.list-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  width: 100%; text-align: left; font: inherit; color: inherit;
-  padding: 15px 4px; border: 0; border-top: 1px solid var(--line);
-  background: transparent; cursor: pointer;
-}
-.list-row:first-child { border-top: 0; }
-.list-row:not(.static):hover { background: rgba(22,58,95,.035); }
-.list-main { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-.list-main strong { font-size: 15px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.list-main span { font-size: 12.5px; color: var(--muted); }
-.list-meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.arrow { color: var(--muted); font-size: 15px; }
-.role-tag { font-size: 11.5px; font-weight: 500; color: var(--muted); background: #eef2f6; padding: 2px 8px; border-radius: 999px; }
-
-.chip { font-size: 11.5px; padding: 3px 9px; border-radius: 999px; white-space: nowrap; border: 1px solid transparent; }
-.chip-ready { color: var(--fact); background: var(--fact-bg); border-color: rgba(35,120,95,.18); }
-.chip-draft { color: var(--muted); background: #f0f3f6; border-color: var(--line); }
-.chip-risk { color: var(--risk); background: var(--risk-bg); border-color: rgba(165,61,70,.2); }
-
-/* 空状态 */
-.empty { text-align: center; padding: 42px 20px; color: var(--muted); }
-.empty strong { display: block; color: var(--ink); font-size: 15px; margin-bottom: 8px; }
-.empty p { margin: 0 auto; max-width: 30em; font-size: 13.5px; line-height: 1.8; }
-
-/* 内联表单 */
-.inline-form { margin-bottom: 16px; }
-.inline-form .actions { margin-top: 12px; }
-.rename-form { display: flex; gap: 8px; align-items: center; margin: 8px 0; flex-wrap: wrap; }
-.rename-form input { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; min-width: 260px; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-/* 链接按钮与危险操作 */
-.link-button { border: 0; background: transparent; font: inherit; color: var(--navy); cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
-.link-button.danger { color: var(--risk); }
-.link-button.small-button { font-size: 12.5px; margin-left: 6px; }
-a.secondary, a.primary { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
-.danger-button { border: 1px solid var(--risk); background: var(--risk); color: #fff; font: inherit; font-weight: 600; padding: 10px 18px; border-radius: 10px; cursor: pointer; }
-.danger-button:hover { filter: brightness(1.06); }
-.danger-zone { margin: 26px 0 60px; padding: 18px 20px; border: 1px dashed rgba(165,61,70,.35); border-radius: 12px; background: rgba(253,239,240,.5); }
-.danger-zone strong { font-size: 14px; color: var(--risk); }
-.danger-zone p { margin: 6px 0 10px; font-size: 13px; color: var(--muted); }
-.danger-zone .actions { margin-top: 10px; }
-
-/* 分析结果 */
-.engine-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); margin: 24px 0 6px; }
-.engine-bar .link-button { margin-left: auto; font-size: 12.5px; }
-.warn-box { background: #fffdf5; border: 1px solid rgba(166,97,12,.25); border-radius: 10px; padding: 12px 16px 12px 16px; margin: 12px 0; }
-.warn-box ul { margin: 0; padding-left: 18px; font-size: 13px; color: #7a4d09; line-height: 1.8; }
-.risk-banner { background: var(--risk-bg); border: 1px solid rgba(165,61,70,.28); border-radius: 12px; padding: 16px 18px; margin: 14px 0; }
-.risk-banner strong { color: var(--risk); font-size: 14px; }
-.risk-banner p { margin: 6px 0 0; font-size: 13px; color: #7d2b32; line-height: 1.75; }
-.risk-banner ul { margin: 8px 0 0; padding-left: 18px; font-size: 13px; color: #7d2b32; line-height: 1.8; }
-.risk-banner.high { border-width: 2px; }
-.opening { font-size: 15px; line-height: 1.85; color: var(--ink); margin: 8px 0 0; }
-.alt { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
-.version-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 18px 0 8px; font-size: 12.5px; color: var(--muted); }
-.version-bar .choice { padding: 5px 10px; font-size: 12.5px; }
-
-/* 键值表与清单 */
-.kv { display: grid; gap: 10px; margin: 12px 0 0; }
-.kv div { display: flex; gap: 16px; font-size: 13.5px; }
-.kv dt { width: 96px; color: var(--muted); flex-shrink: 0; }
-.kv dd { margin: 0; color: var(--ink); word-break: break-all; }
-.plain-list { margin: 10px 0 0; padding-left: 18px; font-size: 13.5px; line-height: 1.9; color: var(--muted); }
-select { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); min-width: 140px; }
-
-@media (max-width: 900px) {
-  .auth-wrap { grid-template-columns: 1fr; padding: 28px 20px 48px; }
-  .auth-side h1 { margin-top: 16px; }
-  .stat-row { grid-template-columns: 1fr; }
-  .form-grid { grid-template-columns: 1fr; }
-  .dash-head { flex-direction: column; }
-  .head-actions { width: 100%; }
-  .head-actions > * { flex: 1; }
-  .list-row { flex-direction: column; align-items: flex-start; gap: 10px; }
-  .list-meta { width: 100%; flex-wrap: wrap; }
-  .nav-links { margin-left: 0; }
-  .topbar { flex-wrap: wrap; gap: 10px; }
-  .user-chip { margin-left: 0; }
-}
-
-/* ============================================================
-   无登录版新增：汇总视图、下一步操作、本机提示
-   ============================================================ */
-
-.empty-actions { margin-top: 16px; display: flex; justify-content: center; gap: 8px; }
-.local-note { margin: 18px 0 60px; font-size: 12.5px; color: var(--muted); line-height: 1.8; }
-.local-note .link-button { font-size: 12.5px; margin-left: 6px; }
-.muted { color: var(--muted); font-size: 13px; margin: 4px 0 10px; }
-
-.summary-panel { margin-top: 16px; }
-.summary-card { border-top: 1px solid var(--line); padding: 18px 0 16px; }
-.summary-card:first-of-type { border-top: 0; }
-.summary-card h3 { font-size: 15.5px; margin: 0 0 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.summary-block { margin: 8px 0 0; font-size: 13px; }
-.summary-block strong { display: block; font-size: 12.5px; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
-.summary-block ul { margin: 0; padding-left: 18px; line-height: 1.75; color: var(--ink); }
-.summary-card .link-button { font-size: 12.5px; margin-top: 10px; display: inline-block; }
-
-.next-actions { display: flex; gap: 10px; margin: 22px 0 0; flex-wrap: wrap; }
-.next-actions .primary { flex: 1; min-width: 220px; }
-
-.upload-label { cursor: pointer; }
-.error { color: var(--risk); background: var(--risk-bg); border: 1px solid rgba(165,61,70,.25); border-radius: 10px; padding: 10px 14px; font-size: 13px; margin-top: 12px; }
+/* ---- 轻量版补充样式 ---- */
+.status.blocked { color: var(--risk); background: var(--risk-bg); }
+.judgment-item { margin: 8px 0; }
+.judgment-item p { margin: 0 0 4px; }
+.judgment-reason { color: var(--muted); font-size: 13px; line-height: 1.6; }
 
 </style>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23163a5f'/%3E%3Ctext x='16' y='22' font-size='17' font-family='PingFang SC,sans-serif' fill='%23fff' text-anchor='middle'%3E谈%3C/text%3E%3C/svg%3E" />
   </head>
   <body>
-    <div id="app" aria-live="polite"></div>
+    <div id="app"></div>
     <script>
 /**
  * 谈绩效 · 分析引擎（浏览器版，无依赖、不联网）
@@ -868,1096 +583,422 @@ select { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border
 });
 
 </script>
-    <script>
-"use strict";
-
+  <script>
 /**
- * 谈绩效 · 单页应用（无登录、无注册、无服务端）
- * 数据存在本机浏览器的 localStorage，随时可导出 Markdown / JSON。
+ * 谈绩效 · 轻量版
+ *
+ * 流程只有一条：说情况 → 确认重点 → 拿方案。
+ * 涉及多人时，只是把每个人的记录攒在本机，最后一次性导出 Markdown 下载。
+ * 没有账号、没有批次管理、没有设置页。数据只存在这台设备的浏览器里。
  */
 
-var root = document.getElementById("app");
-var STORE_KEY = "tanjixiao.v1";
+const root = document.getElementById("app");
+const ANALYSIS = window.TanJixiaoAnalysis;
 
-var state = {
-  view: "boot",
-  data: null,
-  draft: null,
-  dirty: false,
-  viewingVersion: null,
-  showNewBatch: false,
-  showNewCase: false,
-  showNewCaseName: "",
-  renaming: false,
-  listening: false,
-  summary: false,
-  error: "",
-  storageBroken: false,
+const STORE_KEY = "tanJixiaoLight.v1";
+
+const SAMPLE_STORY =
+  "产品经理负责的客户方案原定 10 月 16 日提交，实际 10 月 18 日才提交。他在 10 月 15 日已经发现可能延期，但没有告诉我或客户经理。客户评审因此推迟两天。设计素材也比计划晚了一天。我觉得他缺乏责任心，希望以后能提前暴露风险。";
+
+const SAMPLE_GOAL = "弄清没有提前预警的原因，并约定以后发现交付风险时的沟通机制。";
+
+const DEFAULT_RESPONSE =
+  "我理解设计素材延迟会影响进度。我们先确认一下：你是什么时候判断可能无法按时完成的？当时为什么没有发出风险提醒？";
+
+function freshState() {
+  return {
+    role: "产品经理",
+    story: SAMPLE_STORY,
+    goal: SAMPLE_GOAL,
+    files: [],
+    cases: [],
+    currentSavedId: null,
+    errors: {},
+    analysis: null,
+    quickAnswer: "unknown",
+    listening: false,
+    transcriptBefore: "",
+    reaction: "external",
+    response: DEFAULT_RESPONSE,
+    coachVisible: false,
+    toast: "",
+  };
+}
+
+let state = freshState();
+try {
+  const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
+  if (saved && typeof saved === "object") {
+    state = Object.assign(freshState(), saved, {
+      screen: undefined,
+      listening: false,
+      toast: "",
+      coachVisible: false,
+      errors: {},
+    });
+    delete state.screen;
+  }
+} catch {
+  /* 本机记录不可用时按全新状态运行 */
+}
+
+function persist() {
+  try {
+    const data = {
+      role: state.role,
+      story: state.story,
+      goal: state.goal,
+      files: state.files,
+      cases: state.cases,
+      currentSavedId: state.currentSavedId,
+      analysis: state.analysis,
+      quickAnswer: state.quickAnswer,
+      reaction: state.reaction,
+      response: state.response,
+    };
+    localStorage.setItem(STORE_KEY, JSON.stringify(data));
+  } catch {
+    /* 隐私模式等场景下静默降级为仅会话内保存 */
+  }
+}
+
+let recognition = null;
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function go(screen) {
+  state.screen = screen;
+  state.toast = "";
+  state.coachVisible = false;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  render();
+}
+
+function shell(content, step = 0) {
+  const labels = ["说情况", "确认重点", "拿方案"];
+  return `
+    <div class="shell">
+      <header class="topbar">
+        <button class="brand brand-button" data-go="home" aria-label="返回首页"><span class="brand-mark">谈</span><span>谈绩效<small>面谈准备小工具</small></span></button>
+        <span class="privacy">无需登录 · 数据仅存本机浏览器</span>
+      </header>
+      <main class="container compact-container">
+        ${step ? `<nav class="steps simple-steps" aria-label="流程进度">${labels.map((label, index) => `<div class="step ${index + 1 === step ? "active" : ""} ${index + 1 < step ? "done" : ""}">${index + 1}<span>${label}</span></div>`).join("")}</nav>` : ""}
+        ${content}
+      </main>
+      ${state.toast ? `<div class="toast" role="status">${state.toast}</div>` : ""}
+    </div>`;
+}
+
+function home() {
+  const recordsEntry = state.cases.length
+    ? `<button class="batch-entry" data-go="records"><strong>已记好 ${state.cases.length} 个人的沟通记录</strong><span>查看记录并下载 →</span></button>`
+    : "";
+  return shell(`
+    <section class="simple-hero">
+      <div class="eyebrow">给直接管理者的谈前准备工具</div>
+      <h1>说清情况，<br />带走一份面谈方案。</h1>
+      <p class="lead">不用填复杂表格。花两三分钟说清发生了什么，帮你分开事实与判断，整理谈话重点和后续行动。要谈多个人时，把每个人的记录留好，最后一起下载。</p>
+      <div class="hero-actions"><button class="primary large-button" data-go="input">开始准备</button><span class="sub">支持语音和文字</span></div>
+      ${recordsEntry}
+      <div class="promise-row"><span>不替员工打分</span><span>不判断是否胜任</span><span>不生成处分建议</span></div>
+    </section>`, 0);
+}
+
+function inputScreen() {
+  const supported = Boolean(window.SpeechRecognition || window.webkitSpeechRecognition);
+  const fileList = state.files.length ? `<div class="file-list">${state.files.map((file) => `
+    <article class="file-item">
+      <div><strong>${escapeHtml(file.name)}</strong><span>${escapeHtml(file.detail)}</span></div>
+      <button class="file-remove" data-file-remove="${escapeHtml(file.id)}" aria-label="移除 ${escapeHtml(file.name)}">移除</button>
+    </article>`).join("")}</div>` : "";
+  return shell(`
+    <section class="panel slim-panel">
+      <div class="panel-head simple-head"><div><h2>把情况说给我听</h2><p class="sub">像给 HR 同事讲一遍即可，不必整理成正式材料。</p></div><span class="time-tag">约 2 分钟</span></div>
+      <div class="field-row">
+        <label for="role">员工角色</label>
+        <input id="role" value="${escapeHtml(state.role)}" placeholder="例如：销售主管" />
+      </div>
+      <div class="voice-card ${state.listening ? "listening" : ""}">
+        <div class="voice-top">
+          <div><strong>${state.listening ? "正在听，请继续说" : "描述这次绩效差距"}</strong><span>${state.listening ? "说完后点击停止，文字可继续修改" : "建议包含：原本要求、实际发生、造成影响"}</span></div>
+          <button class="voice-button" data-action="voice" aria-label="${state.listening ? "停止语音输入" : "开始语音输入"}">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 0 0 3.5-3.5V6a3.5 3.5 0 1 0-7 0v6a3.5 3.5 0 0 0 3.5 3.5Zm-7-4a1 1 0 0 1 2 0V12a5 5 0 0 0 10 0v-.5a1 1 0 1 1 2 0V12a7 7 0 0 1-6 6.92V21h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-2.08A7 7 0 0 1 5 12v-.5Z"/></svg>
+            <span>${state.listening ? "停止" : "语音输入"}</span>
+          </button>
+        </div>
+        <textarea id="story" placeholder="例如：原计划周三交付，实际周五完成……">${escapeHtml(state.story)}</textarea>
+        ${!supported ? `<p class="voice-note">当前浏览器不支持语音识别，请使用文字输入。</p>` : `<p class="voice-note">首次使用时，浏览器会请求麦克风权限。录音内容仅用于转成文字。</p>`}
+      </div>
+      <div class="field full simple-goal">
+        <label for="goal">这次最希望谈成什么？<span class="hint">只写一个结果</span></label>
+        <textarea id="goal">${escapeHtml(state.goal)}</textarea>
+      </div>
+      <p class="voice-note">只录入面谈所必需的信息，不要录入身份证号、私人手机号、客户隐私或其他无关敏感信息。</p>
+      ${state.errors.main ? `<div class="error">${state.errors.main}</div>` : ""}
+      <div class="actions simple-actions"><button class="secondary" data-action="clear">清空示例</button><button class="primary" data-action="analyze">整理谈话重点</button></div>
+    </section>`, 1);
+}
+
+function reviewScreen() {
+  const a = state.analysis;
+  if (!a) { state.screen = "input"; return inputScreen(); }
+
+  if (a.riskLevel === "high") {
+    const cards = a.riskFlags.map((flag) => `
+      <article class="review-row judgment-row">
+        <div class="review-label"><span>!</span><strong>${escapeHtml(flag.label)}</strong></div>
+        <p>${escapeHtml(flag.advice)}</p>
+      </article>`).join("");
+    return shell(`
+      <section class="panel slim-panel">
+        <div class="panel-head simple-head"><div><h2>先停一下：这不适合绩效面谈</h2><p class="sub">你的描述里出现了需要专门流程处理的情形。</p></div><span class="status blocked">高风险</span></div>
+        ${cards}
+        <p class="voice-note">为了保护你和员工，本工具在这些情形下不提供谈话话术。请先与 HR / 法务确认处理方式，再决定下一步。</p>
+        <div class="actions simple-actions"><button class="secondary" data-go="input">返回修改描述</button></div>
+      </section>`, 2);
+  }
+
+  const factList = a.facts.length
+    ? `<ul>${a.facts.map((item) => `<li>${escapeHtml(item.text)}</li>`).join("")}</ul>`
+    : `<p>没有从描述里提取到带时间和结果的事实。建议补上：原本要求、实际发生、造成影响。</p>`;
+  const judgmentPart = a.judgmentsToPause.length
+    ? a.judgmentsToPause.map((item) => `
+        <div class="judgment-item"><p>${escapeHtml(item.statement)}</p><p class="judgment-reason">${escapeHtml(item.reason)}</p></div>`).join("")
+    : `<p>没有检测到明显的评价性表述，可以直接进入面谈。</p>`;
+  return shell(`
+    <section class="panel slim-panel">
+      <div class="panel-head simple-head"><div><h2>确认三件事就可以继续</h2><p class="sub">先把事实与判断分开，避免带着未经验证的结论进入面谈。</p></div><span class="status usable">可继续</span></div>
+      <div class="review-list">
+        <article class="review-row fact-row"><div class="review-label"><span>1</span><strong>可以直接说的事实</strong></div>${factList}</article>
+        <article class="review-row judgment-row"><div class="review-label"><span>2</span><strong>先不要下的结论</strong></div>${judgmentPart}</article>
+        <article class="review-row question-row"><div class="review-label"><span>3</span><strong>面谈中需要问清</strong></div><ul>${a.questionsToVerify.map((q) => `<li>${escapeHtml(q)}</li>`).join("")}</ul></article>
+      </div>
+      <div class="actions simple-actions"><button class="secondary" data-go="input">修改描述</button><button class="primary" data-go="report">生成面谈方案</button></div>
+    </section>`, 2);
+}
+
+function reportScreen() {
+  const a = state.analysis;
+  if (!a) { state.screen = "input"; return inputScreen(); }
+  if (a.riskLevel === "high") { state.screen = "review"; return reviewScreen(); }
+  return shell(`
+    <section class="panel plan-panel" id="report">
+      <div class="plan-title"><div><span>面谈前速览</span><h2>${escapeHtml(state.role || "员工")} · 面谈方案</h2></div><button class="secondary small-button" data-action="copy-report">复制</button></div>
+      ${state.goal ? `<section class="plan-focus"><small>这次只谈一个目标</small><strong>${escapeHtml(state.goal)}</strong></section>` : ""}
+      <div class="plan-grid">
+        <section><h3>先讲清的事实</h3><ul>${a.facts.length ? a.facts.map((item) => `<li>${escapeHtml(item.text)}</li>`).join("") : "<li>（补上时间线后再谈）</li>"}</ul></section>
+        <section><h3>先问，不要先判断</h3><ul>${a.questionsToVerify.map((q) => `<li>${escapeHtml(q)}</li>`).join("")}</ul></section>
+        <section><h3>管理者也要承担的部分</h3><ul>${a.managerResponsibilities.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section>
+        <section><h3>谈完要约定</h3><ul>${a.actionPlan.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section>
+      </div>
+      <div class="boundary-note">这是一份谈前准备，不是绩效结论。原因和行动应在面谈中共同确认。</div>
+      <div class="save-note">记录保存在这台设备的浏览器里，清理浏览器会丢失。要谈多个人时，逐个保存后一次性导出下载。</div>
+      <div class="post-actions"><button class="primary" data-action="save-next">保存并准备下一位</button><button class="secondary" data-action="save-records">保存并查看记录</button><button class="secondary" data-go="rehearsal">练一次员工可能的回应</button></div>
+    </section>`, 3);
+}
+
+const reactions = {
+  external: ["强调外部原因", "设计部门本来就给晚了，这不能全怪我。"],
+  fairness: ["质疑公平性", "为什么只说我？其他项目也经常延期。"],
+  silent: ["沉默接受", "好的，我知道了，以后注意。"]
 };
 
-/* ---------------- 存储 ---------------- */
+const coachByReaction = {
+  external: ["你承认了外部影响，没有急着争论责任。", "继续追问员工何时发现风险，以及当时为什么没有预警。"],
+  fairness: ["先承认员工对公平性的关切。", "说明本次只讨论这一个具体事件，不使用其他员工的信息压制他的疑问。"],
+  silent: ["不要把“我知道了”当作已经达成共识。", "请员工用自己的话说明下一次准备在什么节点采取什么行动。"]
+};
 
-function emptyData() {
-  return { version: 1, batches: [], updatedAt: new Date().toISOString() };
+function rehearsalScreen() {
+  const reaction = reactions[state.reaction];
+  const coach = coachByReaction[state.reaction];
+  return shell(`
+    <section class="panel slim-panel">
+      <div class="panel-head simple-head"><div><h2>只练最担心的一种反应</h2><p class="sub">练习内容不会自动写回员工事实。</p></div></div>
+      <div class="reaction-chips">${Object.entries(reactions).map(([key, value]) => `<button class="choice ${state.reaction === key ? "selected" : ""}" data-reaction="${key}">${value[0]}</button>`).join("")}</div>
+      <div class="dialogue-box"><span>员工</span><p>${reaction[1]}</p></div>
+      <label for="response">你会怎么回应？</label>
+      <textarea id="response">${escapeHtml(state.response)}</textarea>
+      <button class="primary feedback-button" data-action="coach">查看教练反馈</button>
+      ${state.coachVisible ? `<div class="coach-simple"><div><strong>保留</strong><p>${coach[0]}</p></div><div><strong>下一步</strong><p>${coach[1]}</p></div></div>` : ""}
+      <div class="actions simple-actions"><button class="secondary" data-go="report">返回方案</button></div>
+    </section>`, 3);
 }
 
-function loadData() {
-  try {
-    var raw = localStorage.getItem(STORE_KEY);
-    if (!raw) return emptyData();
-    var parsed = JSON.parse(raw);
-    if (!parsed || !Array.isArray(parsed.batches)) return emptyData();
-    return parsed;
-  } catch (error) {
-    state.storageBroken = true;
-    return emptyData();
-  }
-}
-
-function saveData() {
-  if (!state.data) return;
-  state.data.updatedAt = new Date().toISOString();
-  try {
-    localStorage.setItem(STORE_KEY, JSON.stringify(state.data));
-    state.storageBroken = false;
-  } catch (error) {
-    state.storageBroken = true;
-    toast("浏览器存储空间不足或被禁用，改动可能无法保留。请立即导出。");
-  }
-}
-
-function uid() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-}
-
-/* ---------------- 工具 ---------------- */
-
-function esc(value) {
-  return String(value == null ? "" : value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function relTime(iso) {
-  if (!iso) return "";
-  var diff = Date.now() - new Date(iso).getTime();
-  if (diff < 60000) return "刚刚";
-  if (diff < 3600000) return Math.floor(diff / 60000) + " 分钟前";
-  if (diff < 86400000) return Math.floor(diff / 3600000) + " 小时前";
-  if (diff < 7 * 86400000) return Math.floor(diff / 86400000) + " 天前";
-  return new Date(iso).toLocaleDateString("zh-CN");
-}
-
-function toast(message) {
-  var old = document.querySelector(".toast");
-  if (old) old.remove();
-  var node = document.createElement("div");
-  node.className = "toast";
-  node.setAttribute("role", "status");
-  node.textContent = message;
-  document.body.appendChild(node);
-  setTimeout(function () {
-    node.remove();
-  }, 3200);
-}
-
-function findBatch(id) {
-  return state.data.batches.filter(function (item) {
-    return item.id === id;
-  })[0];
-}
-
-function findCase(id) {
-  var found = null;
-  state.data.batches.forEach(function (batch) {
-    batch.cases.forEach(function (item) {
-      if (item.id === id) found = { batch: batch, item: item };
-    });
-  });
-  return found;
-}
-
-function latestAnalysis(item) {
-  return item.analyses && item.analyses.length ? item.analyses[item.analyses.length - 1] : null;
-}
-
-function batchStats(batch) {
-  var ready = batch.cases.filter(function (item) {
-    return latestAnalysis(item);
-  }).length;
-  var risk = batch.cases.filter(function (item) {
-    var analysis = latestAnalysis(item);
-    return analysis && analysis.riskLevel === "high";
-  }).length;
-  return { total: batch.cases.length, ready: ready, risk: risk };
-}
-
-/* ---------------- 视图：工作台 ---------------- */
-
-function shell(content) {
-  return (
-    '<div class="shell">' +
-    '<header class="topbar">' +
-    '<button class="brand brand-button" data-act="goto" data-view="home" aria-label="返回工作台">' +
-    '<span class="brand-mark">谈</span><span>谈绩效<small>面谈准备</small></span></button>' +
-    '<nav class="nav-links">' +
-    '<button class="nav-link" data-act="goto" data-view="home">工作台</button>' +
-    '<button class="nav-link" data-act="goto" data-view="settings">设置</button>' +
-    "</nav>" +
-    '<div class="user-chip"><span class="chip chip-draft">无需登录 · 仅存本机</span></div>' +
-    "</header>" +
-    '<main class="container">' +
-    content +
-    "</main></div>"
-  );
-}
-
-function homeView() {
-  var batches = state.data.batches.slice().sort(function (a, b) {
-    return new Date(b.updatedAt) - new Date(a.updatedAt);
-  });
-  var totalCases = 0;
-  var totalReady = 0;
-  batches.forEach(function (batch) {
-    var stats = batchStats(batch);
-    totalCases += stats.total;
-    totalReady += stats.ready;
-  });
-
-  var rows = batches.length
-    ? batches
-        .map(function (batch) {
-          var stats = batchStats(batch);
-          return (
-            '<button class="list-row" data-act="open-batch" data-id="' + esc(batch.id) + '">' +
-            '<div class="list-main"><strong>' + esc(batch.title) + "</strong>" +
-            "<span>" + esc(batch.periodLabel || "未填写周期") + " · " + stats.total + " 人 · 更新于 " + relTime(batch.updatedAt) + "</span></div>" +
-            '<div class="list-meta">' +
-            (stats.risk ? '<span class="chip chip-risk">' + stats.risk + " 人高风险</span>" : "") +
-            '<span class="chip ' + (stats.ready ? "chip-ready" : "chip-draft") + '">' + stats.ready + "/" + stats.total + " 已出方案</span>" +
-            '<span class="arrow">→</span></div></button>'
-          );
-        })
-        .join("")
-    : '<div class="empty"><strong>还没有准备任何批次</strong><p>一个批次对应一次绩效沟通周期，比如「2026 年度绩效反馈」。批次里逐人准备，谈完一起导出。</p>' +
-      '<div class="empty-actions"><button class="secondary" data-act="load-sample">载入一个示例看看</button></div></div>';
-
-  return shell(
-    '<section class="dash-head"><div>' +
-      '<div class="eyebrow">工作台</div><h1>谈前准备</h1>' +
-      '<p class="sub">逐人准备，谈完一次导出所有人的沟通方案。不需要登录，数据存在这台设备的浏览器里。</p></div>' +
-      '<button class="primary" data-act="toggle-new-batch">' + (state.showNewBatch ? "收起" : "＋ 新建批次") + "</button></section>" +
-
-      (state.showNewBatch
-        ? '<form class="panel slim-panel inline-form" data-form="create-batch">' +
-          '<div class="form-grid">' +
-          '<div class="field"><label for="batch-title">批次名称</label>' +
-          '<input id="batch-title" name="title" placeholder="例如：2026 年度绩效反馈" maxlength="180" required /></div>' +
-          '<div class="field"><label for="batch-period">周期<span class="hint">可留空</span></label>' +
-          '<input id="batch-period" name="periodLabel" placeholder="例如：2026 Q4" maxlength="120" /></div></div>' +
-          '<div class="actions"><button class="secondary" type="button" data-act="toggle-new-batch">取消</button>' +
-          '<button class="primary" type="submit">创建批次</button></div></form>'
-        : "") +
-
-      '<section class="stat-row">' +
-      '<div class="stat"><span>批次</span><strong>' + batches.length + "</strong></div>" +
-      '<div class="stat"><span>已录入人数</span><strong>' + totalCases + "</strong></div>" +
-      '<div class="stat"><span>已生成方案</span><strong>' + totalReady + "</strong></div></section>" +
-
-      '<section class="panel"><div class="panel-head simple-head">' +
-      '<div><h2>最近的批次</h2><p class="sub">点开继续准备，或直接导出汇总。</p></div></div>' +
-      '<div class="list">' + rows + "</div></section>" +
-
-      '<p class="local-note">数据只保存在这台设备的浏览器中。换设备或清理浏览器数据会丢失，建议每次谈完导出 Markdown 或 JSON 备份。' +
-      '<button class="link-button" data-act="goto" data-view="settings">去导出</button></p>'
-  );
-}
-
-/* ---------------- 视图：批次 ---------------- */
-
-function summaryMarkdown(batch) {
-  var lines = [];
-  lines.push("# " + batch.title + "｜绩效反馈面谈准备");
-  lines.push("");
-  if (batch.periodLabel) lines.push("- 周期：" + batch.periodLabel);
-  lines.push("- 人数：" + batch.cases.length);
-  lines.push("- 导出时间：" + new Date().toLocaleString("zh-CN"));
-  lines.push("");
-  lines.push("> 本文档是谈前准备材料，不是绩效结论，也不含员工之间的比较或排名。");
-  lines.push("> 原因与行动应在面谈中与员工共同确认。");
-  lines.push("");
-
-  batch.cases.forEach(function (item, index) {
-    var analysis = latestAnalysis(item);
-    lines.push("## " + (index + 1) + ". " + item.employeeName + (item.roleTitle ? "（" + item.roleTitle + "）" : ""));
-    lines.push("");
-    lines.push("**沟通目标**");
-    lines.push("");
-    lines.push(item.goal || "待补充");
-    lines.push("");
-    lines.push("**情况描述**");
-    lines.push("");
-    lines.push(item.story || "待补充");
-    lines.push("");
-    if (analysis) {
-      if (analysis.riskLevel !== "high" && analysis.conversationOpening) {
-        lines.push("**开场**");
-        lines.push("");
-        lines.push(analysis.conversationOpening);
-        lines.push("");
-      }
-      var section = function (title, items, pick) {
-        if (!items || !items.length) return;
-        lines.push("**" + title + "**");
-        lines.push("");
-        items.forEach(function (entry) {
-          lines.push("- " + pick(entry));
-        });
-        lines.push("");
-      };
-      section("可以先讲的事实", analysis.facts, function (entry) {
-        return entry.text || entry;
-      });
-      section("先不要下的结论", analysis.judgmentsToPause, function (entry) {
-        return entry.statement + " —— " + entry.reason;
-      });
-      section("面谈中要问清", analysis.questionsToVerify, function (entry) {
-        return entry;
-      });
-      section("管理者也要承担的部分", analysis.managerResponsibilities, function (entry) {
-        return entry;
-      });
-      if (analysis.riskLevel !== "high") {
-        section("谈完要约定", analysis.actionPlan, function (entry) {
-          return entry;
-        });
-      }
-      if (analysis.riskFlags && analysis.riskFlags.length) {
-        lines.push("**风险提示**");
-        lines.push("");
-        analysis.riskFlags.forEach(function (risk) {
-          lines.push("- [" + risk.level + "] " + risk.label + "：" + risk.advice);
-        });
-        lines.push("");
-      }
-      lines.push("> 分析版本 v" + analysis.versionNo + " · 生成于 " + new Date(analysis.generatedAt).toLocaleString("zh-CN"));
-    } else {
-      lines.push("> 尚未生成面谈方案");
-    }
-    if (index < batch.cases.length - 1) {
-      lines.push("");
-      lines.push("---");
-      lines.push("");
-    }
-  });
-  return lines.join("\n");
-}
-
-function batchView(batch) {
-  var stats = batchStats(batch);
-  var rows = batch.cases.length
-    ? batch.cases
-        .map(function (item) {
-          var analysis = latestAnalysis(item);
-          return (
-            '<div class="list-row static">' +
-            '<div class="list-main"><strong>' + esc(item.employeeName) +
-            (item.roleTitle ? '<small class="role-tag">' + esc(item.roleTitle) + "</small>" : "") + "</strong>" +
-            "<span>" + (analysis ? "方案 v" + analysis.versionNo + " · 更新于 " + relTime(item.updatedAt) : "尚未生成方案") + "</span></div>" +
-            '<div class="list-meta">' +
-            (analysis && analysis.riskLevel === "high" ? '<span class="chip chip-risk">高风险·转 HR</span>' : "") +
-            '<span class="chip ' + (analysis ? "chip-ready" : "chip-draft") + '">' + (analysis ? "已有方案" : "待准备") + "</span>" +
-            '<button class="secondary small-button" data-act="open-case" data-id="' + esc(item.id) + '">打开</button>' +
-            '<button class="link-button danger" data-act="delete-case" data-id="' + esc(item.id) + '" data-name="' + esc(item.employeeName) + '">删除</button>' +
-            "</div></div>"
-          );
-        })
-        .join("")
-    : '<div class="empty"><strong>还没有录入任何人</strong><p>先添加一位员工，说清情况后生成方案。</p></div>';
-
-  return shell(
-    '<div class="crumbs"><button class="link-button" data-act="goto" data-view="home">← 工作台</button></div>' +
-      '<section class="dash-head"><div>' +
-      '<div class="eyebrow">' + esc(batch.periodLabel || "未填写周期") + "</div>" +
-      (state.renaming
-        ? '<form class="rename-form" data-form="rename-batch"><input name="title" value="' + esc(batch.title) + '" maxlength="180" required />' +
-          '<button class="primary small-button" type="submit">保存</button>' +
-          '<button class="secondary small-button" type="button" data-act="toggle-rename">取消</button></form>'
-        : "<h1>" + esc(batch.title) + ' <button class="link-button small-button" data-act="toggle-rename">改名</button></h1>') +
-      "<p class=\"sub\">" + stats.total + " 人 · " + stats.ready + " 份方案</p></div>" +
-      '<div class="head-actions">' +
-      '<button class="primary" data-act="toggle-new-case">' + (state.showNewCase ? "收起" : "＋ 添加员工") + "</button>" +
-      (batch.cases.length ? '<button class="secondary" data-act="export-batch">导出汇总</button><button class="secondary" data-act="copy-batch">复制汇总</button>' : "") +
-      "</div></section>" +
-
-      (stats.risk
-        ? '<div class="risk-banner high"><strong>' + stats.risk + " 位员工触发了高风险提示</strong>" +
-          "<p>涉及辞退、降薪、歧视骚扰、安全健康或争议情形时，本工具停止给出面谈话术。请先转 HR/法务，再决定是否继续沟通。</p></div>"
-        : "") +
-
-      (state.showNewCase
-        ? '<form class="panel slim-panel inline-form" data-form="create-case"><div class="form-grid">' +
-          '<div class="field"><label for="emp-name">员工姓名或代号</label>' +
-          '<input id="emp-name" name="employeeName" placeholder="建议用代号，如「产品-A」" maxlength="120" required /></div>' +
-          '<div class="field"><label for="emp-role">岗位<span class="hint">可留空</span></label>' +
-          '<input id="emp-role" name="roleTitle" placeholder="例如：产品经理" maxlength="120" /></div></div>' +
-          '<p class="voice-note">只录入面谈必需的信息。不要录入身份证号、私人手机号、客户隐私。</p>' +
-          '<div class="actions"><button class="secondary" type="button" data-act="toggle-new-case">取消</button>' +
-          '<button class="primary" type="submit">下一步：说情况</button></div></form>'
-        : "") +
-
-      '<section class="panel"><div class="panel-head simple-head">' +
-      '<div><h2>人员清单</h2><p class="sub">只追踪进度和方案，不做排名和横向打分。</p></div>' +
-      '<button class="link-button" data-act="toggle-summary">' + (state.summary ? "收起汇总" : "在这里搂一遍方案") + "</button></div>" +
-      '<div class="list">' + rows + "</div></section>" +
-
-      (state.summary && batch.cases.length ? summaryView(batch) : "") +
-
-      '<section class="panel batch-guidance"><h3>整批沟通前共同检查</h3><ul>' +
-      "<li>每个人都使用可核实的事实，不复制人格标签。</li>" +
-      "<li>分别确认目标是否清晰、资源是否充分、管理者是否提供过必要支持。</li>" +
-      "<li>行动约定逐人形成，不用其他员工的情况施压或比较。</li></ul></section>" +
-
-      '<section class="danger-zone"><div><strong>删除这个批次</strong><p>批次内 ' + stats.total + " 人的输入与全部分析版本会一起删除，无法恢复。</p>" +
-      '<button class="link-button danger" data-act="delete-batch" data-id="' + esc(batch.id) + '">删除批次</button></div></section>'
-  );
-}
-
-function summaryView(batch) {
-  return (
-    '<section class="panel summary-panel" id="summary"><div class="panel-head simple-head">' +
-    '<div><h2>本批方案汇总</h2><p class="sub">把所有人的方案并排放在一起看，逐人确认，不比较、不打分。</p></div></div>' +
-    batch.cases
-      .map(function (item) {
-        var analysis = latestAnalysis(item);
-        if (!analysis) {
-          return '<article class="summary-card"><h3>' + esc(item.employeeName) + '</h3><p class="muted">尚未生成方案。</p></article>';
-        }
-        var bullets = function (items, pick) {
-          if (!items || !items.length) return "";
-          return "<ul>" + items.map(function (entry) { return "<li>" + esc(pick(entry)) + "</li>"; }).join("") + "</ul>";
-        };
-        return (
-          '<article class="summary-card">' +
-          "<h3>" + esc(item.employeeName) + (item.roleTitle ? '<small class="role-tag">' + esc(item.roleTitle) + "</small>" : "") +
-          (analysis.riskLevel === "high" ? '<span class="chip chip-risk">高风险·转 HR</span>' : "") + "</h3>" +
-          '<p class="muted">目标：' + esc(item.goal || "待补充") + "</p>" +
-          (analysis.riskLevel === "high"
-            ? '<div class="warn-box"><ul>' + analysis.riskFlags.map(function (risk) { return "<li>" + esc(risk.label) + "：" + esc(risk.advice) + "</li>"; }).join("") + "</ul></div>"
-            : "") +
-          '<div class="summary-block"><strong>先讲事实</strong>' + bullets(analysis.facts, function (entry) { return entry.text || entry; }) + "</div>" +
-          '<div class="summary-block"><strong>要问清</strong>' + bullets(analysis.questionsToVerify, function (entry) { return entry; }) + "</div>" +
-          (analysis.riskLevel === "high" ? "" : '<div class="summary-block"><strong>要约定</strong>' + bullets(analysis.actionPlan, function (entry) { return entry; }) + "</div>") +
-          '<button class="link-button" data-act="open-case" data-id="' + esc(item.id) + '">打开完整方案 →</button>' +
-          "</article>"
-        );
-      })
-      .join("") +
-    "</section>"
-  );
-}
-
-/* ---------------- 视图：个案 ---------------- */
-
-function analysisView(analysis) {
-  if (!analysis) return "";
-  var high = analysis.riskLevel === "high";
-  var section = function (title, items, pick) {
-    if (!items || !items.length) return "";
-    return '<section class="analysis-card"><h3>' + title + "</h3><ul>" + items.map(pick).join("") + "</ul></section>";
-  };
-  // 高风险：只保留事实、判断提醒与核实问题；开场与行动约定属于"话术"，一律不给
-  return (
-    '<div class="engine-bar">' +
-    '<span class="status ' + (high ? "" : "usable") + '">' + (high ? "已停止自动建议" : "规则分析 · 本地运行") + "</span>" +
-    "<span>v" + analysis.versionNo + " · " + relTime(analysis.generatedAt) + "</span>" +
-    '<button class="link-button" data-act="copy-plan">复制这一份</button></div>' +
-    (analysis.warnings && analysis.warnings.length
-      ? '<div class="warn-box"><ul>' + analysis.warnings.map(function (item) { return "<li>" + esc(item) + "</li>"; }).join("") + "</ul></div>"
-      : "") +
-    (analysis.riskFlags && analysis.riskFlags.length
-      ? '<div class="risk-banner ' + (high ? "high" : "") + '"><strong>' + (high ? "已停止自动建议" : "风险提示") + "</strong><ul>" +
-        analysis.riskFlags.map(function (risk) {
-          return "<li><b>" + esc(risk.label) + "</b>（" + esc(risk.level) + "）：" + esc(risk.advice) + "</li>";
-        }).join("") + "</ul></div>"
-      : "") +
-    (high
-      ? '<div class="warn-box"><ul><li>由于涉及高风险情形，开场话术与行动约定已隐藏。请先与 HR/法务确认处理方式，再决定是否继续绩效沟通。</li></ul></div>'
-      : analysis.conversationOpening
-        ? '<section class="analysis-card"><h3>开场怎么说</h3><p class="opening">' + esc(analysis.conversationOpening) + "</p></section>"
-        : "") +
-    section("可以直接陈述的事实", analysis.facts, function (entry) {
-      return "<li>" + esc(entry.text || entry) + "</li>";
-    }) +
-    section("先不要下的结论", analysis.judgmentsToPause, function (entry) {
-      return "<li><strong>" + esc(entry.statement) + "</strong><p>" + esc(entry.reason) + "</p>" +
-        (entry.alternative ? '<p class="alt">' + esc(entry.alternative) + "</p>" : "") + "</li>";
-    }) +
-    section("面谈中需要问清", analysis.questionsToVerify, function (entry) {
-      return "<li>" + esc(entry) + "</li>";
-    }) +
-    section("管理者也要承担的部分", analysis.managerResponsibilities, function (entry) {
-      return "<li>" + esc(entry) + "</li>";
-    }) +
-    (high ? "" : section("谈完要约定", analysis.actionPlan, function (entry) {
-      return "<li>" + esc(entry) + "</li>";
-    })) +
-    '<div class="boundary-note">这是一份谈前准备，不是绩效结论。原因和行动应在面谈中与员工共同确认。</div>'
-  );
-}
-
-function caseView(batch, item) {
-  var draft = state.draft;
-  var analysis = state.viewingVersion != null
-    ? item.analyses.filter(function (entry) { return entry.versionNo === state.viewingVersion; })[0]
-    : latestAnalysis(item);
-  var supported = Boolean(window.SpeechRecognition || window.webkitSpeechRecognition);
-  var versions = item.analyses.length
-    ? '<div class="version-bar"><span>历史版本</span>' +
-      item.analyses
-        .slice()
-        .reverse()
-        .map(function (entry) {
-          return '<button class="choice ' + (analysis && analysis.versionNo === entry.versionNo ? "selected" : "") +
-            '" data-act="view-version" data-no="' + entry.versionNo + '">v' + entry.versionNo + " · " + relTime(entry.generatedAt) + "</button>";
-        })
-        .join("") + "</div>"
-    : "";
-
-  return shell(
-    '<div class="crumbs"><button class="link-button" data-act="open-batch" data-id="' + esc(batch.id) + '">← ' + esc(batch.title) + "</button></div>" +
-      '<section class="dash-head"><div>' +
-      '<div class="eyebrow">' + esc(batch.periodLabel || "面谈准备") + "</div>" +
-      "<h1>" + esc(draft.employeeName || "新员工") + (draft.roleTitle ? '<small class="role-tag">' + esc(draft.roleTitle) + "</small>" : "") + "</h1>" +
-      '<p class="sub">' + (latestAnalysis(item) ? "最近生成于 " + relTime(latestAnalysis(item).generatedAt) : "填写情况后生成面谈方案") + "</p></div>" +
-      (analysis ? '<button class="secondary" data-act="scroll-analysis">↓ 看当前方案</button>' : "") +
-      "</section>" +
-
-      '<form class="panel slim-panel" data-form="save-case">' +
-      '<div class="panel-head simple-head"><div><h2>把情况说清楚</h2><p class="sub">像给同事讲一遍即可，不必整理成正式材料。</p></div></div>' +
-      '<div class="form-grid">' +
-      '<div class="field"><label for="employeeName">员工姓名或代号</label>' +
-      '<input id="employeeName" name="employeeName" value="' + esc(draft.employeeName) + '" maxlength="120" /></div>' +
-      '<div class="field"><label for="roleTitle">岗位</label>' +
-      '<input id="roleTitle" name="roleTitle" value="' + esc(draft.roleTitle) + '" maxlength="120" /></div></div>' +
-
-      '<div class="voice-card ' + (state.listening ? "listening" : "") + '">' +
-      '<div class="voice-top"><div><strong>' + (state.listening ? "正在听，请继续说" : "这次发生了什么") + "</strong>" +
-      "<span>" + (state.listening ? "说完后点停止，文字仍可修改" : "建议包含：原本要求、实际发生、造成的影响、时间点") + "</span></div>" +
-      (supported
-        ? '<button class="voice-button" type="button" data-act="voice">' +
-          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 0 0 3.5-3.5V6a3.5 3.5 0 1 0-7 0v6a3.5 3.5 0 0 0 3.5 3.5Zm-7-4a1 1 0 0 1 2 0V12a5 5 0 0 0 10 0v-.5a1 1 0 1 1 2 0V12a7 7 0 0 1-6 6.92V21h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-2.08A7 7 0 0 1 5 12v-.5Z"/></svg>' +
-          "<span>" + (state.listening ? "停止" : "语音输入") + "</span></button>"
-        : "") +
-      "</div>" +
-      '<textarea id="story" name="story" rows="7" maxlength="20000" placeholder="例如：原计划周三交付，实际周五才完成，中间没有同步风险……">' + esc(draft.story) + "</textarea>" +
-      '<p class="voice-note">' + (supported ? "语音由浏览器转成文字，只追加到这段输入框，不上传录音。" : "当前浏览器不支持语音识别，请用文字输入。") + "</p></div>" +
-
-      '<div class="field full"><label for="goal">这次最希望谈成什么<span class="hint">只写一个结果</span></label>' +
-      '<textarea id="goal" name="goal" rows="3" maxlength="2000" placeholder="例如：弄清没有提前预警的原因，并约定风险同步机制。">' + esc(draft.goal) + "</textarea></div>" +
-
-      '<div class="field full"><label for="evidence">补充资料<span class="hint">可粘贴项目记录、目标说明</span></label>' +
-      '<textarea id="evidence" name="evidence" rows="4" maxlength="20000" placeholder="粘贴已有的文字材料，系统会当作线索，不当作已确认的事实。">' + esc(draft.evidence) + "</textarea></div>" +
-
-      '<div class="actions">' +
-      '<button class="secondary" type="submit">保存</button>' +
-      '<button class="primary" type="button" data-act="analyze">' + (latestAnalysis(item) ? "重新生成方案" : "生成面谈方案") + "</button></div>" +
-      '<p class="voice-note">输入会自动保存到本机。重新生成会新增一个版本，旧版本仍可查看。</p></form>' +
-
-      '<section id="analysis">' + analysisView(analysis) + "</section>" +
-      versions +
-
-      (latestAnalysis(item)
-        ? '<section class="next-actions">' +
-          '<button class="primary" data-act="next-person">保存并准备下一位</button>' +
-          '<button class="secondary" data-act="open-summary">看本批汇总</button></section>'
-        : "") +
-
-      '<section class="danger-zone"><div><strong>删除这个个案</strong>' +
-      "<p>删除后这位员工的输入与全部分析版本都会消失，无法恢复。</p>" +
-      '<button class="link-button danger" data-act="delete-case" data-id="' + esc(item.id) + '" data-name="' + esc(item.employeeName) + '">删除个案</button></div></section>'
-  );
-}
-
-/* ---------------- 视图：设置 ---------------- */
-
-function settingsView() {
-  var totalCases = 0;
-  var totalAnalyses = 0;
-  state.data.batches.forEach(function (batch) {
-    totalCases += batch.cases.length;
-    batch.cases.forEach(function (item) {
-      totalAnalyses += item.analyses.length;
-    });
-  });
-
-  return shell(
-    '<section class="dash-head"><div><div class="eyebrow">设置</div><h1>数据与边界</h1>' +
-      '<p class="sub">这个工具没有账号系统，所有内容存在你这台设备的浏览器里。</p></div></section>' +
-
-      '<section class="panel slim-panel"><h2>当前数据</h2><dl class="kv">' +
-      "<div><dt>批次</dt><dd>" + state.data.batches.length + "</dd></div>" +
-      "<div><dt>员工</dt><dd>" + totalCases + "</dd></div>" +
-      "<div><dt>分析版本</dt><dd>" + totalAnalyses + "</dd></div>" +
-      "<div><dt>最后修改</dt><dd>" + (state.data.updatedAt ? new Date(state.data.updatedAt).toLocaleString("zh-CN") : "—") + "</dd></div>" +
-      "</dl>" +
-      (state.storageBroken ? '<div class="error">浏览器存储不可用，当前内容无法持久保存，请立即导出。</div>' : "") +
-      "</section>" +
-
-      '<section class="panel slim-panel"><h2>备份</h2>' +
-      '<p class="sub">导出的 JSON 可以在另一台设备导入，继续使用。</p>' +
-      '<div class="actions"><button class="secondary" data-act="export-all">导出全部数据（JSON）</button>' +
-      '<label class="secondary upload-label">导入 JSON<input type="file" accept="application/json" data-role="import" hidden /></label></div>' +
-      "</section>" +
-
-      '<section class="panel slim-panel"><h2>分析方式</h2>' +
-      '<p class="sub">当前使用本地规则分析：从你写的那段话里抽取事实、判断、待核实问题和管理者责任，' +
-      "不联网、不调用外部模型，因此没有调用成本，也不会有内容外传。代价是它不理解语义，改写措辞会影响抽取结果。</p>" +
-      '<ul class="plain-list"><li>不做员工横向排名，不自动给出绩效等级，不判断是否胜任。</li>' +
-      "<li>不生成处分、辞退、降薪或正式 PIP 建议；遇到这些情形会停止给出话术。</li>" +
-      "<li>输出是谈前草案，必须由管理者确认后才使用。</li>" +
-      "<li>不保存原始录音；语音只在本机浏览器转成文字。</li></ul></section>" +
-
-      '<section class="danger-zone"><div><strong>清空本机全部数据</strong>' +
-      "<p>会删除这台浏览器里的所有批次、员工和方案，且无法恢复。建议先导出备份。</p>" +
-      (state.confirmClear
-        ? '<div class="actions"><button class="secondary" data-act="cancel-clear">取消</button>' +
-          '<button class="danger-button" data-act="clear-all">确认清空</button></div>'
-        : '<button class="link-button danger" data-act="ask-clear">清空数据</button>') +
-      "</div></section>"
-  );
-}
-
-/* ---------------- 渲染 ---------------- */
-
-function parseHash() {
-  var raw = location.hash.replace(/^#\/?/, "");
-  var parts = raw.split("/");
-  return { view: parts[0] || "home", id: parts[1] || "" };
-}
-
-function setHash(hash, push) {
-  if (location.hash === hash) return;
-  if (push) history.pushState({}, "", hash);
-  else history.replaceState({}, "", hash);
+function recordsScreen() {
+  const cards = state.cases.length
+    ? state.cases.map((item, index) => `<article class="batch-card">
+        <div class="batch-card-head"><div><small>第 ${index + 1} 位</small><h3>${escapeHtml(item.role || "未命名角色")}</h3></div><button class="file-remove" data-case-remove="${escapeHtml(item.id)}">移除</button></div>
+        <p><strong>沟通目标：</strong>${escapeHtml(item.goal || "待补充")}</p>
+        <p class="batch-excerpt"><strong>情况摘要：</strong>${escapeHtml((item.story || "").slice(0, 120))}${(item.story || "").length > 120 ? "……" : ""}</p>
+        <div class="batch-meta"><span>${item.factsCount} 条事实</span><span>${item.questionsCount} 个待问问题</span></div>
+      </article>`).join("")
+    : `<div class="empty-batch">还没有任何人的记录。逐个准备、逐个保存，最后在这里一次性下载。</div>`;
+  return shell(`
+    <section class="panel batch-panel">
+      <div class="panel-head simple-head"><div><div class="eyebrow">沟通记录</div><h2>多人记录与下载</h2><p class="sub">逐人保留情况和方案，不做排名、打分或横向比较。</p></div><span class="status usable">${state.cases.length} 人</span></div>
+      <div class="batch-grid">${cards}</div>
+      ${state.cases.length ? `<section class="batch-guidance"><h3>下载后整批沟通时共同检查</h3><ul><li>每个人都使用可核实的事实，不复制人格标签。</li><li>分别确认目标是否清晰、资源是否充分、管理者是否提供过必要支持。</li><li>行动约定逐人形成，不用其他员工的情况施压或比较。</li></ul></section>` : ""}
+      <div class="actions batch-actions"><button class="secondary" data-go="home">返回首页</button><div class="actions-right">${state.cases.length ? `<button class="secondary" data-action="clear-records">清空全部记录</button><button class="secondary" data-action="copy-records">复制汇总</button><button class="primary" data-action="export-records">下载 Markdown</button>` : `<button class="secondary" data-go="input">开始准备</button>`}</div></div>
+    </section>`, 0);
 }
 
 function render() {
-  var route = parseHash();
-  if (route.view === "batch" && route.id) {
-    var batch = findBatch(route.id);
-    if (batch) {
-      root.innerHTML = batchView(batch);
-      return;
-    }
-  }
-  if (route.view === "case" && route.id) {
-    var found = findCase(route.id);
-    if (found) {
-      root.innerHTML = caseView(found.batch, found.item);
-      return;
-    }
-  }
-  if (route.view === "settings") {
-    root.innerHTML = settingsView();
-    return;
-  }
-  root.innerHTML = homeView();
+  const screens = { home, input: inputScreen, review: reviewScreen, report: reportScreen, rehearsal: rehearsalScreen, records: recordsScreen };
+  root.innerHTML = screens[state.screen || "home"]();
+  bind();
 }
 
-function go(view, id) {
-  state.viewingVersion = null;
-  state.renaming = false;
-  state.showNewCase = false;
-  state.showNewBatch = false;
-  state.summary = false;
-  if (view === "home") setHash("#/home", true);
-  else if (view === "settings") setHash("#/settings", true);
-  else setHash("#/" + view + "/" + id, true);
+function bind() {
+  root.querySelectorAll("[data-go]").forEach((element) => element.addEventListener("click", () => go(element.dataset.go)));
+  root.querySelectorAll("[data-reaction]").forEach((element) => element.addEventListener("click", () => { state.reaction = element.dataset.reaction; state.coachVisible = false; render(); }));
+  root.querySelectorAll("[data-action]").forEach((element) => element.addEventListener("click", () => action(element.dataset.action)));
+  const role = root.querySelector("#role");
+  const story = root.querySelector("#story");
+  const goal = root.querySelector("#goal");
+  const response = root.querySelector("#response");
+  if (role) role.addEventListener("input", (event) => { state.role = event.target.value; persist(); });
+  if (story) story.addEventListener("input", (event) => { state.story = event.target.value; persist(); });
+  if (goal) goal.addEventListener("input", (event) => { state.goal = event.target.value; persist(); });
+  if (response) response.addEventListener("input", (event) => { state.response = event.target.value; persist(); });
+  root.querySelectorAll("[data-file-remove]").forEach((element) => element.addEventListener("click", () => {
+    state.files = state.files.filter((file) => file.id !== element.dataset.fileRemove);
+    persist();
+    render();
+  }));
+  root.querySelectorAll("[data-case-remove]").forEach((element) => element.addEventListener("click", () => {
+    state.cases = state.cases.filter((item) => item.id !== element.dataset.caseRemove);
+    persist();
+    render();
+  }));
+}
+
+function saveCurrentCase() {
+  const a = state.analysis || { facts: [], questionsToVerify: [] };
+  const item = {
+    id: state.currentSavedId || `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    savedAt: new Date().toISOString().slice(0, 10),
+    role: state.role.trim(),
+    story: state.story.trim(),
+    goal: state.goal.trim(),
+    factsCount: (a.facts || []).length,
+    questionsCount: (a.questionsToVerify || []).length,
+  };
+  const existing = state.cases.findIndex((entry) => entry.id === item.id);
+  if (existing >= 0) state.cases[existing] = item;
+  else state.cases.push(item);
+  state.currentSavedId = item.id;
+  persist();
+}
+
+function resetCurrentCase() {
+  state.role = "";
+  state.story = "";
+  state.goal = "";
+  state.files = [];
+  state.analysis = null;
+  state.quickAnswer = "unknown";
+  state.currentSavedId = null;
+  state.errors = {};
+  persist();
+}
+
+function recordsMarkdown() {
+  const sections = state.cases.map((item, index) => `## ${index + 1}. ${item.role || "未命名角色"}（${item.savedAt}）\n\n**沟通目标**\n\n${item.goal || "待补充"}\n\n**情况摘要**\n\n${item.story || "（未填写）"}\n\n**面谈重点**\n\n- 先陈述可核实事实，不下人格结论\n- 先问再判断：还原时间线、当时的考虑、外部影响\n- 明确管理者需要提供的支持\n- 共同约定行动、责任人与复盘时间`).join("\n\n---\n\n");
+  return `# 绩效反馈面谈准备记录\n\n共 ${state.cases.length} 人。本文档是谈前准备，不是绩效结论或横向排名。\n\n${sections}\n`;
+}
+
+function downloadRecords() {
+  const blob = new Blob([recordsMarkdown()], { type: "text/markdown;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `绩效面谈准备记录-${new Date().toISOString().slice(0, 10)}.md`;
+  link.click();
+  URL.revokeObjectURL(url);
+  state.toast = "记录文件已开始下载。";
   render();
-  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* ---------------- 语音 ---------------- */
-
-var recognition = null;
-
-function toggleVoice() {
-  var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) return;
-  if (state.listening && recognition) {
-    recognition.stop();
+function startVoice() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    state.toast = "当前浏览器不支持语音识别，请使用文字输入。";
+    render();
     return;
   }
+  if (state.listening && recognition) { recognition.stop(); return; }
   recognition = new SpeechRecognition();
   recognition.lang = "zh-CN";
   recognition.continuous = true;
   recognition.interimResults = true;
-  var before = state.draft.story.trim();
-  recognition.onstart = function () {
-    state.listening = true;
-    render();
+  state.transcriptBefore = state.story.trim();
+  recognition.onstart = () => { state.listening = true; render(); };
+  recognition.onresult = (event) => {
+    let transcript = "";
+    for (let index = event.resultIndex; index < event.results.length; index += 1) transcript += event.results[index][0].transcript;
+    state.story = `${state.transcriptBefore}${state.transcriptBefore ? "\n" : ""}${transcript}`;
+    const field = root.querySelector("#story");
+    if (field) field.value = state.story;
   };
-  recognition.onresult = function (event) {
-    var text = "";
-    for (var index = event.resultIndex; index < event.results.length; index += 1) {
-      text += event.results[index][0].transcript;
-    }
-    state.draft.story = before + (before ? "\n" : "") + text;
-    var field = root.querySelector("#story");
-    if (field) field.value = state.draft.story;
-    scheduleSave();
-  };
-  recognition.onerror = function (event) {
+  recognition.onerror = (event) => {
     state.listening = false;
-    render();
-    toast(event.error === "not-allowed" ? "未获得麦克风权限，可以继续用文字输入。" : "语音识别不可用，请改用文字。");
-  };
-  recognition.onend = function () {
-    state.listening = false;
+    state.toast = event.error === "not-allowed" ? "未获得麦克风权限，可以继续使用文字输入。" : "语音识别暂时不可用，请改用文字输入。";
     render();
   };
+  recognition.onend = () => { state.listening = false; render(); };
   recognition.start();
 }
 
-/* ---------------- 保存 ---------------- */
-
-var saveTimer = null;
-
-function scheduleSave() {
-  state.dirty = true;
-  if (saveTimer) clearTimeout(saveTimer);
-  saveTimer = setTimeout(function () {
-    commitDraft(true);
-  }, 500);
-}
-
-function commitDraft(silent) {
-  var route = parseHash();
-  if (route.view !== "case" || !route.id) return;
-  var found = findCase(route.id);
-  if (!found) return;
-  if (state.draft.employeeName.trim()) found.item.employeeName = state.draft.employeeName.trim();
-  found.item.roleTitle = state.draft.roleTitle.trim();
-  found.item.story = state.draft.story;
-  found.item.goal = state.draft.goal;
-  found.item.evidence = state.draft.evidence;
-  found.item.updatedAt = new Date().toISOString();
-  found.batch.updatedAt = new Date().toISOString();
-  saveData();
-  state.dirty = false;
-  if (!silent) toast("已保存");
-}
-
-function download(filename, content, mime) {
-  var blob = new Blob([content], { type: mime || "text/plain;charset=utf-8" });
-  var url = URL.createObjectURL(blob);
-  var link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  setTimeout(function () {
-    URL.revokeObjectURL(url);
-  }, 1000);
-}
-
-function copyText(text, okMessage) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(
-      function () {
-        toast(okMessage);
-      },
-      function () {
-        toast("浏览器未允许复制，请改用导出。");
-      }
-    );
-  } else {
-    toast("当前浏览器不支持一键复制，请改用导出。");
+function action(name) {
+  if (name === "voice") startVoice();
+  if (name === "clear") { state.role = ""; state.story = ""; state.goal = ""; state.analysis = null; state.errors = {}; persist(); render(); }
+  if (name === "analyze") {
+    const missing = [];
+    if (!state.role.trim()) missing.push("员工角色");
+    if (state.story.trim().length < 20) missing.push("具体情况（至少 20 字）");
+    if (!state.goal.trim()) missing.push("谈话目标");
+    if (missing.length) { state.errors.main = `请补充：${missing.join("、")}。`; render(); return; }
+    state.errors = {};
+    state.analysis = ANALYSIS.analyze({ role: state.role, story: state.story, goal: state.goal });
+    persist();
+    go("review");
+  }
+  if (name === "coach") { if (!state.response.trim()) { state.toast = "请先写下你的回应。"; render(); } else { state.coachVisible = true; render(); } }
+  if (name === "copy-report") {
+    const text = root.querySelector("#report").innerText;
+    navigator.clipboard?.writeText(text).then(() => { state.toast = "面谈方案已复制。"; render(); }).catch(() => { state.toast = "浏览器未允许复制，请手动选择内容。"; render(); });
+  }
+  if (name === "save-next") {
+    saveCurrentCase();
+    resetCurrentCase();
+    state.toast = "已保存这条记录，可以继续准备下一位。";
+    go("input");
+  }
+  if (name === "save-records") { saveCurrentCase(); go("records"); }
+  if (name === "copy-records") {
+    navigator.clipboard?.writeText(recordsMarkdown()).then(() => { state.toast = "汇总已复制。"; render(); }).catch(() => { state.toast = "浏览器未允许复制，请使用下载。"; render(); });
+  }
+  if (name === "export-records") downloadRecords();
+  if (name === "clear-records") {
+    if (window.confirm(`确定清空全部 ${state.cases.length} 条记录吗？删除后无法恢复。建议先下载留档。`)) {
+      state.cases = [];
+      persist();
+      state.toast = "记录已清空。";
+    }
+    render();
   }
 }
 
-/* ---------------- 事件 ---------------- */
-
-root.addEventListener("click", function (event) {
-  var target = event.target.closest("[data-act]");
-  if (!target) return;
-  var act = target.dataset.act;
-  var route = parseHash();
-
-  if (act === "goto") {
-    go(target.dataset.view);
-    return;
-  }
-  if (act === "toggle-new-batch") {
-    state.showNewBatch = !state.showNewBatch;
-    render();
-    return;
-  }
-  if (act === "toggle-new-case") {
-    state.showNewCase = !state.showNewCase;
-    render();
-    if (state.showNewCase) {
-      var input = root.querySelector("#emp-name");
-      if (input) input.focus();
-    }
-    return;
-  }
-  if (act === "toggle-summary") {
-    state.summary = !state.summary;
-    render();
-    var node = root.querySelector("#summary");
-    if (node) node.scrollIntoView({ behavior: "smooth", block: "start" });
-    return;
-  }
-  if (act === "toggle-rename") {
-    state.renaming = !state.renaming;
-    render();
-    return;
-  }
-  if (act === "open-batch") {
-    go("batch", target.dataset.id);
-    return;
-  }
-  if (act === "open-case") {
-    var found = findCase(target.dataset.id);
-    if (!found) return;
-    state.draft = {
-      employeeName: found.item.employeeName,
-      roleTitle: found.item.roleTitle || "",
-      story: found.item.story || "",
-      goal: found.item.goal || "",
-      evidence: found.item.evidence || "",
-    };
-    state.dirty = false;
-    go("case", found.item.id);
-    return;
-  }
-  if (act === "open-summary") {
-    var batchId = target.dataset.id || (findCase(route.id) || {}).batch;
-    go("batch", typeof batchId === "string" ? batchId : route.id);
-    state.summary = true;
-    render();
-    var summary = root.querySelector("#summary");
-    if (summary) summary.scrollIntoView({ behavior: "smooth", block: "start" });
-    return;
-  }
-  if (act === "voice") {
-    toggleVoice();
-    return;
-  }
-  if (act === "scroll-analysis") {
-    var analysisNode = root.querySelector("#analysis");
-    if (analysisNode) analysisNode.scrollIntoView({ behavior: "smooth", block: "start" });
-    return;
-  }
-  if (act === "view-version") {
-    state.viewingVersion = Number(target.dataset.no);
-    render();
-    var versionNode = root.querySelector("#analysis");
-    if (versionNode) versionNode.scrollIntoView({ behavior: "smooth", block: "start" });
-    return;
-  }
-  if (act === "analyze") {
-    var current = findCase(route.id);
-    if (!current) return;
-    if (!state.draft.employeeName.trim()) {
-      toast("先填上员工姓名或代号。");
-      return;
-    }
-    if (state.draft.story.trim().length < 15 && !state.draft.evidence.trim()) {
-      toast("情况描述太短，至少写清发生了什么。");
-      return;
-    }
-    commitDraft(true);
-    var result = window.TanJixiaoAnalysis.analyze({
-      role: state.draft.roleTitle || state.draft.employeeName,
-      story: state.draft.story,
-      goal: state.draft.goal,
-      evidence: state.draft.evidence,
-    });
-    result.versionNo = current.item.analyses.length + 1;
-    current.item.analyses.push(result);
-    current.item.updatedAt = new Date().toISOString();
-    current.batch.updatedAt = new Date().toISOString();
-    saveData();
-    state.viewingVersion = null;
-    render();
-    toast(result.riskLevel === "high" ? "已识别高风险，停止给出话术" : "方案已生成");
-    var target2 = root.querySelector("#analysis");
-    if (target2) target2.scrollIntoView({ behavior: "smooth", block: "start" });
-    return;
-  }
-  if (act === "copy-plan") {
-    var found2 = findCase(route.id);
-    if (!found2) return;
-    var item2 = found2.item;
-    var analysis2 = state.viewingVersion != null
-      ? item2.analyses.filter(function (entry) { return entry.versionNo === state.viewingVersion; })[0]
-      : latestAnalysis(item2);
-    var text = ["# " + item2.employeeName + " 面谈准备（v" + analysis2.versionNo + "）", ""];
-    if (analysis2.riskLevel !== "high" && analysis2.conversationOpening) text.push("## 开场", analysis2.conversationOpening, "");
-    var push = function (title, items, pick) {
-      if (!items || !items.length) return;
-      text.push("## " + title);
-      items.forEach(function (entry) { text.push("- " + pick(entry)); });
-      text.push("");
-    };
-    push("可以直接陈述的事实", analysis2.facts, function (entry) { return entry.text || entry; });
-    push("先不要下的结论", analysis2.judgmentsToPause, function (entry) { return entry.statement + " —— " + entry.reason; });
-    push("面谈中需要问清", analysis2.questionsToVerify, function (entry) { return entry; });
-    push("管理者也要承担的部分", analysis2.managerResponsibilities, function (entry) { return entry; });
-    if (analysis2.riskLevel !== "high") push("谈完要约定", analysis2.actionPlan, function (entry) { return entry; });
-    if (analysis2.riskLevel === "high") text.push("## 风险提示", "> 已停止自动建议：请先与 HR/法务确认处理方式。");
-    text.push("> 本文是谈前准备，不是绩效结论。");
-    copyText(text.join("\n"), "已复制到剪贴板");
-    return;
-  }
-  if (act === "next-person") {
-    var currentBatch = (findCase(route.id) || {}).batch;
-    commitDraft(true);
-    if (currentBatch) {
-      go("batch", currentBatch.id);
-      state.showNewCase = true;
-      render();
-      var nameField = root.querySelector("#emp-name");
-      if (nameField) nameField.focus();
-      toast("已保存，接着录下一位");
-    }
-    return;
-  }
-  if (act === "export-batch" || act === "copy-batch") {
-    var batch = findBatch(route.id);
-    if (!batch) return;
-    var markdown = summaryMarkdown(batch);
-    if (act === "export-batch") {
-      download("面谈方案-" + batch.title + "-" + new Date().toISOString().slice(0, 10) + ".md", markdown, "text/markdown;charset=utf-8");
-      toast("已导出 Markdown");
-    } else {
-      copyText(markdown, "已复制汇总");
-    }
-    return;
-  }
-  if (act === "delete-case") {
-    var name = target.dataset.name || "该员工";
-    if (!window.confirm("确认删除「" + name + "」的个案和全部分析版本？此操作无法恢复。")) return;
-    var located = findCase(target.dataset.id);
-    if (!located) return;
-    located.batch.cases = located.batch.cases.filter(function (entry) {
-      return entry.id !== target.dataset.id;
-    });
-    located.batch.updatedAt = new Date().toISOString();
-    saveData();
-    if (route.view === "case") go("batch", located.batch.id);
-    else render();
-    toast("已删除");
-    return;
-  }
-  if (act === "delete-batch") {
-    var batchToDelete = findBatch(target.dataset.id);
-    if (!batchToDelete) return;
-    if (!window.confirm("确认删除批次「" + batchToDelete.title + "」及其中全部个案？此操作无法恢复。")) return;
-    state.data.batches = state.data.batches.filter(function (entry) {
-      return entry.id !== target.dataset.id;
-    });
-    saveData();
-    go("home");
-    toast("批次已删除");
-    return;
-  }
-  if (act === "export-all") {
-    download("谈绩效-备份-" + new Date().toISOString().slice(0, 10) + ".json", JSON.stringify(state.data, null, 2), "application/json");
-    toast("已导出 JSON 备份");
-    return;
-  }
-  if (act === "ask-clear") {
-    state.confirmClear = true;
-    render();
-    return;
-  }
-  if (act === "cancel-clear") {
-    state.confirmClear = false;
-    render();
-    return;
-  }
-  if (act === "clear-all") {
-    state.data = emptyData();
-    saveData();
-    state.confirmClear = false;
-    go("home");
-    toast("本机数据已清空");
-    return;
-  }
-  if (act === "load-sample") {
-    loadSample();
-    return;
-  }
-});
-
-root.addEventListener("input", function (event) {
-  var field = event.target;
-  if (!field.name) return;
-  if (state.draft && field.name in state.draft) {
-    state.draft[field.name] = field.value;
-    scheduleSave();
-  }
-});
-
-root.addEventListener("change", function (event) {
-  if (event.target.dataset.role === "import") {
-    var file = event.target.files && event.target.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function () {
-      try {
-        var parsed = JSON.parse(String(reader.result));
-        if (!parsed || !Array.isArray(parsed.batches)) throw new Error("格式不对");
-        if (!window.confirm("导入会覆盖当前浏览器里的全部数据，确认继续？")) return;
-        state.data = parsed;
-        saveData();
-        go("home");
-        toast("已导入");
-      } catch (error) {
-        toast("导入失败：文件不是有效的备份 JSON。");
-      }
-    };
-    reader.readAsText(file);
-    event.target.value = "";
-  }
-});
-
-root.addEventListener("submit", function (event) {
-  var form = event.target.closest("form[data-form]");
-  if (!form) return;
-  event.preventDefault();
-  var data = new FormData(form);
-  var kind = form.dataset.form;
-
-  if (kind === "create-batch") {
-    var title = String(data.get("title") || "").trim();
-    if (!title) return;
-    var batch = {
-      id: uid(),
-      title: title,
-      periodLabel: String(data.get("periodLabel") || "").trim(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      cases: [],
-    };
-    state.data.batches.push(batch);
-    saveData();
-    state.showNewBatch = false;
-    go("batch", batch.id);
-    return;
-  }
-
-  if (kind === "rename-batch") {
-    var current = findBatch(parseHash().id);
-    var newTitle = String(data.get("title") || "").trim();
-    if (current && newTitle) {
-      current.title = newTitle;
-      current.updatedAt = new Date().toISOString();
-      saveData();
-    }
-    state.renaming = false;
-    render();
-    return;
-  }
-
-  if (kind === "create-case") {
-    var batchId = parseHash().id;
-    var target = findBatch(batchId);
-    if (!target) return;
-    var name = String(data.get("employeeName") || "").trim();
-    if (!name) return;
-    var item = {
-      id: uid(),
-      employeeName: name,
-      roleTitle: String(data.get("roleTitle") || "").trim(),
-      story: "",
-      goal: "",
-      evidence: "",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      analyses: [],
-    };
-    target.cases.push(item);
-    target.updatedAt = new Date().toISOString();
-    saveData();
-    state.draft = { employeeName: item.employeeName, roleTitle: item.roleTitle, story: "", goal: "", evidence: "" };
-    state.dirty = false;
-    go("case", item.id);
-    return;
-  }
-
-  if (kind === "save-case") {
-    commitDraft(false);
-    render();
-    return;
-  }
-});
-
-window.addEventListener("popstate", function () {
-  render();
-});
-
-window.addEventListener("beforeunload", function (event) {
-  if (state.dirty) {
-    commitDraft(true);
-  }
-});
-
-/* ---------------- 示例 ---------------- */
-
-function loadSample() {
-  var existing = state.data.batches.filter(function (item) {
-    return item.title === "示例：2026 年度绩效反馈";
-  })[0];
-  var batch = existing;
-  if (!batch) {
-    batch = {
-      id: uid(),
-      title: "示例：2026 年度绩效反馈",
-      periodLabel: "2026 Q4",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      cases: [],
-    };
-    state.data.batches.push(batch);
-  }
-  if (!batch.cases.length) {
-    var story =
-      "产品经理负责的客户方案原定 10 月 16 日提交，实际 10 月 18 日才提交。他在 10 月 15 日已经发现可能延期，但没有告诉我或客户经理。客户评审因此推迟两天。设计素材也比计划晚了一天。我觉得他缺乏责任心。";
-    var item = {
-      id: uid(),
-      employeeName: "产品-A",
-      roleTitle: "产品经理",
-      story: story,
-      goal: "弄清没有提前预警的原因，并约定以后发现交付风险时的沟通机制。",
-      evidence: "",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      analyses: [],
-    };
-    var result = window.TanJixiaoAnalysis.analyze({ role: item.roleTitle, story: story, goal: item.goal, evidence: "" });
-    result.versionNo = 1;
-    item.analyses.push(result);
-    batch.cases.push(item);
-  }
-  saveData();
-  go("batch", batch.id);
-  toast("示例已载入，可以直接改文字试试");
-}
-
-/* ---------------- 启动 ---------------- */
-
-state.data = loadData();
 render();
-if (!location.hash) setHash("#/home", false);
 
 </script>
   </body>
